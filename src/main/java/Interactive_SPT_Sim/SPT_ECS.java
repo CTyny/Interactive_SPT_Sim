@@ -14,24 +14,29 @@ public class SPT_ECS {
     //note: systems are called in the order they are added to WorldConfigurationBuilder
     int chipSize = 512;
     double pixelSize = 160;
-    double fov = 81920; //field of view size in nm
+    double fov = chipSize*pixelSize; //field of view size in nm
     
     WorldConfiguration simConfig = new WorldConfigurationBuilder()
     .with(new MotionSystem(), new FluorescenceSystem(), new BrownianSystem(), new TrackRenderSystem()).build();
     
     World microWorld = new World(simConfig);
-    
-    //create an entity to test
-    int e = microWorld.create();
 
     ComponentMapper<FluorescenceComponent> fluorescence;
     ComponentMapper<PositionComponent> position;
     ComponentMapper<VelocityComponent> velocity;
 
     //having these here causes build failure(?!) need to figure out why!
-    //PositionComponent pos = position.create(e);
+    
     //VelocityComponent vel = velocity.create(e);
     
+    public void fluorophoreCreator(){
+        //create fluorophore entity with random initial position and velocity
+        int e = microWorld.create();
+        
+        position.set(e, true);
+        //pos.x = 10000;
+        //pos.y = 10000;
+    }
     
     public void simLoop() {
         microWorld.setDelta(1);
@@ -41,6 +46,7 @@ public class SPT_ECS {
     public static void main (final String[] args) {
        
         SPT_ECS sim = new SPT_ECS();
+        sim.fluorophoreCreator();
         for (int i=0; i<10; i++){
             sim.simLoop();
         }
