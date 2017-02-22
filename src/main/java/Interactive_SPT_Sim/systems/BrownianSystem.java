@@ -1,4 +1,3 @@
-
 package Interactive_SPT_Sim.systems;
 
 import Interactive_SPT_Sim.components.PositionComponent;

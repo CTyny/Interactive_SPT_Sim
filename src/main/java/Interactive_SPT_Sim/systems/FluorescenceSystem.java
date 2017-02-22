@@ -1,4 +1,3 @@
-
 package Interactive_SPT_Sim.systems;
 
 import Interactive_SPT_Sim.components.FluorescenceComponent;
@@ -10,13 +9,14 @@ import java.util.Random;
 
 public class FluorescenceSystem extends IteratingSystem {
     
-    ComponentMapper <FluorescenceComponent> fluorescence;
     public FluorescenceSystem() {
         super(Aspect.all());
     }
-
+    
+    ComponentMapper <FluorescenceComponent> fluorescence;
     @Override
     protected void process(int e) {
+        
         Random random = new Random(); //fluorescence will be on with 0.8 probability
         int r = random.nextInt(10); //generate random number from 0-9
         if (r <= 7) { //if number is 0-7(80% of possible numbers) then add fluorescence component as tag
