@@ -21,10 +21,11 @@ public class TrackRenderSystem extends IteratingSystem {
         PositionComponent p = position.getSafe(e, null);
         float x = p.x;
         float y = p.y;
+        //TODO: Make simulation output graphical.
         if (fluorescence.has(e)){
-            System.out.println("x = " + x + " y = " + y + "*");
+            System.out.println("Entity ID: " + e + " x = " + x + " y = " + y + "*");
         } else {
-            System.out.println("x = " + x + " y = " + y + "-");
+            System.out.println("Entity ID: " + e + " x = " + x + " y = " + y + "-");
         }    
     }
 }

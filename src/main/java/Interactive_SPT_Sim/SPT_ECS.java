@@ -1,8 +1,6 @@
 package Interactive_SPT_Sim;
 
 import Interactive_SPT_Sim.systems.*;
-import Interactive_SPT_Sim.components.*;
-import com.artemis.ComponentMapper;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
@@ -15,7 +13,7 @@ public class SPT_ECS {
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new InitialisationSystem(), new MotionSystem(), new FluorescenceSystem(), new BrownianSystem(), new TrackRenderSystem()).build();
+        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new TrackRenderSystem()).build();
     
         World w = new World(simConfig);
         
@@ -33,6 +31,9 @@ public class SPT_ECS {
         w.process();
     }
    
+    public void regionOfInterest() {
+        //TODO: Method for defining limits of an ROI (e.g. cell boundary)
+    }
     
     public static void main (final String[] args) {
        

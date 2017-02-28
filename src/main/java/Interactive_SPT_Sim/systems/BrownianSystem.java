@@ -12,8 +12,8 @@ public class BrownianSystem extends IteratingSystem {
     }
 
     @Override
-    protected void process(int i) {
-        //this needs to change velocityComponent to a new random velocity
+    protected void process(int e) {
+        //TODO: change velocityComponent to a new random velocity vector to simulate brownian motion
     }
     
 }

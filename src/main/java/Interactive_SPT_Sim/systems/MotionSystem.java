@@ -12,7 +12,9 @@ public class MotionSystem extends IteratingSystem {
     }
     
     @Override
-    protected void process(int i) {
-        //This needs to contain something that changes the positionComponent based on the velocityComponent
+    protected void process(int e) {
+        //TODO: change the entities positionComponent co-ordinates based on it's velocityComponent vector
+        //TODO: check new position falls inside ROI
+        //TODO: if new position outside reflect (i.e. reverse direction of vector) and retest
     }
 }
