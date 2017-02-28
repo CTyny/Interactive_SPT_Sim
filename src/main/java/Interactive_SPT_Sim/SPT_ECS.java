@@ -15,7 +15,7 @@ public class SPT_ECS {
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new PopulationSystem(), new MotionSystem(), new FluorescenceSystem(), new BrownianSystem(), new TrackRenderSystem()).build();
+        .with(new InitialisationSystem(), new MotionSystem(), new FluorescenceSystem(), new BrownianSystem(), new TrackRenderSystem()).build();
     
         World w = new World(simConfig);
         
@@ -32,12 +32,19 @@ public class SPT_ECS {
         w.setDelta(1);
         w.process();
     }
+   
     
     public static void main (final String[] args) {
        
         SPT_ECS sim = new SPT_ECS();
         World microWorld = sim.worldBuilder();
-        sim.fluorophoreCreator(microWorld);
+        
+        //create all entities at start, nothing bleaches (Quantum dot simulator lol) 
+        //until I can figure out how to create/destroy entities in a system
+        for (int i=0; i<3; i++){
+            sim.fluorophoreCreator(microWorld);
+        }
+        
         for (int i=0; i<10; i++){
             sim.simLoop(microWorld);
         }
