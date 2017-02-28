@@ -18,10 +18,13 @@ public class TrackRenderSystem extends IteratingSystem {
 
     @Override
     protected void process(int e) {
+        PositionComponent p = position.getSafe(e, null);
+        float x = p.x;
+        float y = p.y;
         if (fluorescence.has(e)){
-            System.out.println("x = " + "y = " + "*");
+            System.out.println("x = " + x + " y = " + y + "*");
         } else {
-            System.out.println("x = " + "y = " + "-");
+            System.out.println("x = " + x + " y = " + y + "-");
         }    
     }
 }
