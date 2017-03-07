@@ -4,16 +4,24 @@ import Interactive_SPT_Sim.systems.*;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
+import ij.ImagePlus;
+import ij.gui.NewImage;
 
 
 public class SPT_ECS {
     
+    ImagePlus simImage;
+    World microWorld;
+    int pxRes = 512;
+    
     public World worldBuilder() {
         
+        simImage = NewImage.createImage("",pxRes, pxRes,1, 8, NewImage.FILL_BLACK);
+        simImage.show();
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new TrackRenderSystem()).build();
+        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new TrackRenderSystem(simImage)).build();
     
         World w = new World(simConfig);
         
@@ -27,8 +35,9 @@ public class SPT_ECS {
     }
     
     public void simLoop(World w) {
-        w.setDelta(1);
+        w.setDelta(1000);
         w.process();
+        System.out.println("tick");
     }
    
     public void regionOfInterest() {
@@ -45,11 +54,10 @@ public class SPT_ECS {
         for (int i=0; i<3; i++){
             sim.fluorophoreCreator(microWorld);
         }
-        
-        for (int i=0; i<10; i++){
+        //run a limited number of ticks for now
+        for (int i=0; i<1; i++){
             sim.simLoop(microWorld);
         }
-        //new SPT_ECS().simLoop(); //never ending simulation!!!
     }
 }
 

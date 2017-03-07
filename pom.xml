@@ -24,5 +24,10 @@
                 <artifactId>artemis-odb</artifactId>
                 <version>RELEASE</version>
             </dependency>
+            <dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+                        <version>RELEASE</version>
+		</dependency>
         </dependencies>
 </project>
