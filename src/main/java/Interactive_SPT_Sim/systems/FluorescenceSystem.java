@@ -14,12 +14,12 @@ public class FluorescenceSystem extends IteratingSystem {
     }
     
     ComponentMapper <FluorescenceComponent> fluorescence;
+    Random random = new Random();
     @Override
     protected void process(int e) {
-        
-        Random random = new Random(); //fluorescence will be on with 0.8 probability
-        int r = random.nextInt(10); //generate random number from 0-9
-        if (r <= 7) { //if number is 0-7(80% of possible numbers) then add fluorescence component as tag
+        //TODO: more realistic blinking
+        int r = random.nextInt(100); //generate random number from 0-99
+        if (r <= 85) { //if number is 0-85(85% of possible numbers) then add fluorescence component as tag
             fluorescence.set(e, true);
         } else { // otherwise remove it
             fluorescence.set(e, false);
