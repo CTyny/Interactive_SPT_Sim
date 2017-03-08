@@ -14,7 +14,6 @@ public class SingleMoleculeImageGenerator {
         //create array to hold pixel counts
         //int[][] imageArray = new int[pixelRes][pixelRes];
         double pixelSize = realSize/pixelRes;
-        System.out.println(entityPosition[0] + " " + entityPosition[1]);
             for (int j=0; j<totalCounts; j++) {
                 double detX =getGauss(entityPosition[0], airyDia);
                 double assessX = detX/pixelSize;
@@ -22,7 +21,7 @@ public class SingleMoleculeImageGenerator {
                 double detY =getGauss(entityPosition[1], airyDia);
                 double assessY = detY/pixelSize;
                 int pixelY = (int) assessY;
-                //don't try to add counts when gaussian spread falls outside the image boundaries!
+                //don't try to add counts when gaussian spread falls outside the image boundaries (or entity has wanderedoutside)!
                 if (pixelY<pixelRes && pixelX>=0 && pixelX<pixelRes && pixelY>=0) { 
                     imageArray[pixelX][pixelY] += 1;
                 }

@@ -63,8 +63,9 @@ public class RenderSystem extends BaseEntitySystem {
         for (int i=0; i<actives.size(); i++){
             process(ids[i]);
         }
+        int dT = (int) (1000*world.getDelta());//convert world delta to milliseconds
+        IJ.wait(dT);//wait to update image
         //update ImagePlus object
-        IJ.wait(50);//wait to update. TODO: figure out how to get world Delta then convert to millisecond wait time here
         outputImage.updateAndDraw();
     }
 }

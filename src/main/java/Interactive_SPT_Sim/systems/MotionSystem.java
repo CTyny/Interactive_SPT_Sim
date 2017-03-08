@@ -3,6 +3,7 @@ package Interactive_SPT_Sim.systems;
 import Interactive_SPT_Sim.components.PositionComponent;
 import Interactive_SPT_Sim.components.VelocityComponent;
 import com.artemis.Aspect;
+import com.artemis.ComponentMapper;
 import com.artemis.systems.IteratingSystem;
 
 public class MotionSystem extends IteratingSystem {
@@ -11,10 +12,15 @@ public class MotionSystem extends IteratingSystem {
         super(Aspect.all(PositionComponent.class, VelocityComponent.class));
     }
     
+    ComponentMapper<PositionComponent> position;
+    ComponentMapper<VelocityComponent> velocity;
+    
     @Override
     protected void process(int e) {
-        //TODO: change the entities positionComponent co-ordinates based on it's velocityComponent vector
-        //TODO: check new position falls inside ROI
-        //TODO: if new position outside reflect (i.e. reverse direction of vector) and retest
+        PositionComponent pos = position.get(e);
+        VelocityComponent vel = velocity.get(e);
+        
+        pos.x += vel.vx*world.getDelta();
+        pos.y += vel.vy*world.getDelta();
     }
 }
