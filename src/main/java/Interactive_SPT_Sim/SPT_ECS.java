@@ -21,7 +21,7 @@ public class SPT_ECS {
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new TrackRenderSystem(simImage)).build();
+        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new RenderSystem(simImage)).build();
     
         World w = new World(simConfig);
         
@@ -35,9 +35,8 @@ public class SPT_ECS {
     }
     
     public void simLoop(World w) {
-        w.setDelta(1000);
+        w.setDelta(0.05f);//units set as whole seconds for now
         w.process();
-        System.out.println("tick");
     }
    
     public void regionOfInterest() {
@@ -51,11 +50,11 @@ public class SPT_ECS {
         
         //create all entities at start, nothing bleaches (Quantum dot simulator lol) 
         //until I can figure out how to create/destroy entities in a system
-        for (int i=0; i<3; i++){
+        for (int i=0; i<20; i++){
             sim.fluorophoreCreator(microWorld);
         }
         //run a limited number of ticks for now
-        for (int i=0; i<1; i++){
+        for (int i=0; i<400; i++){
             sim.simLoop(microWorld);
         }
     }
