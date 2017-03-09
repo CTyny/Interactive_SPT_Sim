@@ -17,9 +17,8 @@ public class FluorescenceSystem extends IteratingSystem {
     Random random = new Random();
     @Override
     protected void process(int e) {
-        //TODO: blinking is broken
         int r = random.nextInt(100); //generate random number from 0-99
-        if (r <= 99) { //if number is 0-x((x-1)% of possible numbers) then add fluorescence component as tag
+        if (r <= 94) { //if number is 0-x((x-1)% of possible numbers) then add fluorescence component as tag
             fluorescence.set(e, true);
         } else { // otherwise remove it
             fluorescence.set(e, false);

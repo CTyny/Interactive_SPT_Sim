@@ -1,11 +1,13 @@
 package Interactive_SPT_Sim;
 
 import Interactive_SPT_Sim.systems.*;
+import Interactive_SPT_Sim.utilities.SingleMoleculeImageGenerator;
 import com.artemis.World;
 import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import ij.ImagePlus;
 import ij.gui.NewImage;
+import ij.process.ImageProcessor;
 
 
 public class SPT_ECS {
@@ -13,6 +15,7 @@ public class SPT_ECS {
     ImagePlus simImage;
     World microWorld;
     int pxRes = 512;
+    int [][] psfArray = SingleMoleculeImageGenerator.pixelatedPSF(pxRes, 81920, 1500, 160);
     
     public World worldBuilder() {
         
@@ -21,7 +24,7 @@ public class SPT_ECS {
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new RenderSystem(simImage)).build();
+        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new RenderSystem(simImage, psfArray)).build();
     
         World w = new World(simConfig);
         
@@ -30,17 +33,12 @@ public class SPT_ECS {
     
     public void fluorophoreCreator(World w){
         //create entity 
-        int e = w.create();
-        
+        int e = w.create();    
     }
     
     public void simLoop(World w) {
         w.setDelta(0.05f);//units set as whole seconds for now
         w.process();
-    }
-   
-    public void regionOfInterest() {
-        //TODO: Method for defining limits of an ROI (e.g. cell boundary)
     }
     
     public static void main (final String[] args) {
@@ -50,13 +48,14 @@ public class SPT_ECS {
         
         //create all entities at start, nothing bleaches (Quantum dot simulator lol) 
         //until I can figure out how to create/destroy entities in a system
-        for (int i=0; i<20; i++){
+        for (int i=0; i<1000; i++){
             sim.fluorophoreCreator(microWorld);
         }
         //run a limited number of ticks for now
-        for (int i=0; i<400; i++){
+        for (int i=0; i<500; i++){
             sim.simLoop(microWorld);
         }
+        System.exit(0);
     }
 }
 
