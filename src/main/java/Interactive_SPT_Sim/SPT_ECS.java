@@ -7,15 +7,15 @@ import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import ij.ImagePlus;
 import ij.gui.NewImage;
-import ij.process.ImageProcessor;
 
 
 public class SPT_ECS {
     
     ImagePlus simImage;
     World microWorld;
-    int pxRes = 512;
-    int [][] psfArray = SingleMoleculeImageGenerator.pixelatedPSF(pxRes, 81920, 1500, 160);
+    int pxRes = 1024;
+    int [][] psfArray = SingleMoleculeImageGenerator.pixelatedPSF(pxRes, 81920, 2000, 280);//one time generation of oversampled psf for fast construction of pixel maps
+    long lastTime; //hold the system time for previous render update
     
     public World worldBuilder() {
         
@@ -24,7 +24,7 @@ public class SPT_ECS {
         //Configure world
         //note: systems are called in the order they are added to WorldConfigurationBuilder
         WorldConfiguration simConfig = new WorldConfigurationBuilder()
-        .with(new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new RenderSystem(simImage, psfArray)).build();
+        .with(new PopulationSystem(), new InitialisationSystem(), new BrownianSystem(), new MotionSystem(), new FluorescenceSystem(), new RenderSystem(simImage, psfArray)).build();
     
         World w = new World(simConfig);
         
@@ -37,7 +37,7 @@ public class SPT_ECS {
     }
     
     public void simLoop(World w) {
-        w.setDelta(0.05f);//units set as whole seconds for now
+        w.setDelta(0.0333f);//units set as whole seconds for now
         w.process();
     }
     
@@ -48,12 +48,13 @@ public class SPT_ECS {
         
         //create all entities at start, nothing bleaches (Quantum dot simulator lol) 
         //until I can figure out how to create/destroy entities in a system
-        for (int i=0; i<1000; i++){
+        for (int i=0; i<600; i++){
             sim.fluorophoreCreator(microWorld);
         }
         //run a limited number of ticks for now
         for (int i=0; i<500; i++){
             sim.simLoop(microWorld);
+            //System.out.println("tick");
         }
         System.exit(0);
     }

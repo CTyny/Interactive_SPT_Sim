@@ -25,6 +25,7 @@ public class RenderSystem extends BaseEntitySystem {
     int[][] pixValues;//array to store pixel values as they are generated for each fluorescent entity
     double [] eLoc;//store entity position each iteration
     double [][] eLocs;//array to store entity positions for rendering
+    long lastTime;
     
     public RenderSystem (ImagePlus outputImage, int[][] psfArray){
         super(Aspect.all(FluorescenceComponent.class));//only interested in entities tagged with FluorescenceComponent
@@ -49,13 +50,11 @@ public class RenderSystem extends BaseEntitySystem {
         for (int i=0; i<pixR; i++){
             Arrays.fill(pixValues[i],0);
         }
-        //int dT = (int) (1000*world.getDelta());//convert world delta to milliseconds. TODO:Change this so that frame is updated at desired framerate based on system time
-        //IJ.wait(dT);//wait to update image. Waiting after processing entities causes display issues...not clear why.
         
         //get entity IDs that this sytem is interested in
         IntBag actives = subscription.getEntities();
         int[] ids =actives.getData();
-        //Iterate through entities
+        //Iterate through entitiesto get their positions in a usable format
         eLocs = new double [actives.size()][2];
         for (int i=0; i<actives.size(); i++){
             process(ids[i]);
@@ -65,15 +64,20 @@ public class RenderSystem extends BaseEntitySystem {
         
         //Now we scent entity have all the fluorescent entity positions, we can generate a pixel map and draw the image
         ImageProcessor ip = outputImage.getProcessor();
-        //int counts = 1500;//randomly allocating a realistic number of counts to a gaussian distribution gets too expensive as entity numbers increase!
-        //pixValues = SingleMoleculeImageGenerator.addCountsToImage(pixValues, pixR, 81920, counts, 160, eLocs);
         pixValues = SingleMoleculeImageGenerator.addCountsToImage(pixValues,81920, psfArray, eLocs);
         for (int i=0; i<pixR; i++) {
             for (int j=0; j <pixR; j++){
                 ip.putPixel(i, j, pixValues[i][j]);
             }
         }
+        //Now we find out how long it's been since the last image update (lastTime) and if this is less than the world Delta wait for the difference
+        long nanoDelta = (long) (world.getDelta()*1E9);
+        long timeToWait = nanoDelta - (System.nanoTime()-lastTime);
+        if (timeToWait >0){
+            IJ.wait((int)(timeToWait/1E6));
+        }
         //update ImagePlus object
         outputImage.updateAndDraw();
+        lastTime = System.nanoTime();
     }
 }

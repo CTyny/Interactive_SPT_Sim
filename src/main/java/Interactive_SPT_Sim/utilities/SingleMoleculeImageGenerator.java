@@ -11,28 +11,8 @@ public final class SingleMoleculeImageGenerator {
     //only static methods    
     }
     
-    public static int[][] addCountsToImage (int[][] imageArray, int pixelRes, int realSize, int totalCounts, double airyDia, double [][] entityPositions) {
-        //create array to hold pixel counts
-        double pixelSize = realSize/pixelRes;
-            for (int i=0; i<entityPositions.length; i++) {
-                for (int j=0; j<totalCounts; j++) {
-                    double detX =getGauss(entityPositions[i][0], airyDia);
-                    double assessX = detX/pixelSize;
-                    int pixelX = (int) assessX;
-                    double detY =getGauss(entityPositions[i][1], airyDia);
-                    double assessY = detY/pixelSize;
-                    int pixelY = (int) assessY;
-                    //don't try to add counts when gaussian spread falls outside the image boundaries (or entity has wanderedoutside)!
-                    if (pixelY<pixelRes && pixelX>=0 && pixelX<pixelRes && pixelY>=0) { 
-                        imageArray[pixelX][pixelY] += 1;
-                    }
-                }
-            }
-        return imageArray;
-    }
-    
     public static int[][] addCountsToImage (int[][] imageArray, int realSize, int [][] pxPSF, double [][] entityPositions){
-        
+        //takes entity positions and pre-calculated 4 x oversampled gaussian and uses them to generate pixel map to simulate a single molecule image
         double pxSizeImage = realSize/(imageArray.length);
         double pxSizePSF = pxSizeImage/4;
         double pxPSFDim = pxPSF.length;
@@ -56,21 +36,22 @@ public final class SingleMoleculeImageGenerator {
     }
     
     
-    public static int[][] pixelatedPSF (int pixelRes, int realSize, int totalCounts, double airyDia) {
+    public static int[][] pixelatedPSF (int pixelRes, int realSize, int totalCounts, double airyRad) {
         //create array to hold analytical pixelated gaussian
-        double pixelSize = realSize/(pixelRes*2);//want oversampling of PSF
-        int pxPSFDim = (int)((4*airyDia)/pixelSize);
+        double pixelSize = realSize/(pixelRes*4);//want oversampling of PSF
+        double gaussStDev = airyRad/2;
+        int pxPSFDim = (int)((2*airyRad)/pixelSize);
         int[][] pxPSF = new int [pxPSFDim][pxPSFDim];
         for (int i=0; i<totalCounts; i++) {
-            double detX = getGauss((pxPSFDim*pixelSize)/2, airyDia);
+            double detX = getGauss((pxPSFDim*pixelSize)/2, gaussStDev);
             double assessX = detX/pixelSize;
             int pixelX = (int) assessX;
-            double detY =getGauss((pxPSFDim*pixelSize)/2, airyDia);
+            double detY =getGauss((pxPSFDim*pixelSize)/2, gaussStDev);
             double assessY = detY/pixelSize;
             int pixelY = (int) assessY;
             //don't try to add counts when gaussian spread falls outside the array boundaries
             if (pixelY<pxPSFDim && pixelX>=0 && pixelX<pxPSFDim && pixelY>=0) { 
-                pxPSF[pixelX][pixelY] += 1;
+                pxPSF[pixelX][pixelY]++;
             }
         }
         return pxPSF;
