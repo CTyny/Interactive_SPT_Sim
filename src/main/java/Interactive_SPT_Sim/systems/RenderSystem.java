@@ -76,8 +76,10 @@ public class RenderSystem extends BaseEntitySystem {
         if (timeToWait >0){
             IJ.wait((int)(timeToWait/1E6));
         }
+        System.out.println("tick: " + (System.nanoTime()-lastTime));
         //update ImagePlus object
         outputImage.updateAndDraw();
         lastTime = System.nanoTime();
+        //TODO: something is broken here, frame rate varies unecessarily through simulation. Casting errors?
     }
 }

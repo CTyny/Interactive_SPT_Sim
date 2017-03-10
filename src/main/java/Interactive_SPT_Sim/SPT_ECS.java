@@ -48,7 +48,7 @@ public class SPT_ECS {
         
         //create all entities at start, nothing bleaches (Quantum dot simulator lol) 
         //until I can figure out how to create/destroy entities in a system
-        for (int i=0; i<600; i++){
+        for (int i=0; i<1000; i++){
             sim.fluorophoreCreator(microWorld);
         }
         //run a limited number of ticks for now
