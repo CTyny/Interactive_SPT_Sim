@@ -25,7 +25,7 @@ public class MotionSystem extends IteratingSystem {
     float[] testXY = new float[2];
     testXY[0] = pos.x + (vel.vx*world.getDelta());
     testXY[1] = pos.y + (vel.vy*world.getDelta());
-    inside = ZoneHandler.insideZone(testXY);
+    inside = ZoneHandler.insideZone(testXY, 81920);
     if (inside ==true) {
         pos.x = testXY[0];
         pos.y = testXY[1];

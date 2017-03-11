@@ -12,8 +12,8 @@ public class PopulationSystem extends BaseEntitySystem {
     
     public PopulationSystem() {
         super(Aspect.all());
-        destroy = 1;//TODO: rather than be defined by constructor, these variables could be adjusted each loop in response to changes in photoactivation and bleaching rate
-        create = 1;
+        destroy = 10;//TODO: rather than be defined by constructor, these variables could be adjusted each loop in response to changes in photoactivation and bleaching rate
+        create = 10;
     }
     
     @Override

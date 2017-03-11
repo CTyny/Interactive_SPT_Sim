@@ -7,14 +7,23 @@ public final class ZoneHandler {
         //static methods only
     }
     
-    public static boolean insideZone (float[] position){
-        //TODO: chnage diamond to something more cell shaped
-        //TODO: fast checks for coarse zone boundaries (a
-        double[][] vertices = {{(81920/4),(81920/2)},{(81920/2),(3*81920/4)},{(3*81920/4),(81920/2)},{(81920/2),(81920/4)},{(81920/4),(81920/2)}};
+    public static boolean insideZone (float[] position, int realSize){
+        //TODO: fast checks for coarse zone boundaries
+        double[][] vertices = {{5,8},
+                               {7,6},
+                               {9,5.5},
+                               {8.8,4.5},
+                               {9.1,3.5},
+                               {5,1.5},
+                               {3,2},
+                               {2,2.5},
+                               {1,5},
+                               {2.5,6.5},
+                               {5,8}};
         
         for (int i=0; i<vertices.length; i++){
-            vertices[i][0] -= position[0];
-            vertices[i][1] -= position[1];
+            vertices[i][0] = ((realSize/10)*vertices[i][0]) - position[0];
+            vertices[i][1] = ((realSize/10)*vertices[i][1]) - position[1];
         }
         float wN =0;
         for (int i=0; i<(vertices.length-1); i++){

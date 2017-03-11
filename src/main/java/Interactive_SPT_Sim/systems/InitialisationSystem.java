@@ -30,7 +30,7 @@ public class InitialisationSystem extends IteratingSystem {
     while (inside ==false){
         testXY[0]= random.nextInt(81920);//physical size of imaged region is square with side 81920nm.
         testXY[1]= random.nextInt(81920);// position acurrate to nearest nm
-        inside = ZoneHandler.insideZone(testXY);
+        inside = ZoneHandler.insideZone(testXY, 81920);
     }
     p.x = testXY[0];
     p.y = testXY[1];

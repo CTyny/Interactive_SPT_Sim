@@ -14,7 +14,7 @@ public class SPT_ECS {
     ImagePlus simImage;
     World microWorld;
     int pxRes = 1024;
-    int [][] psfArray = SingleMoleculeImageGenerator.pixelatedPSF(pxRes, 81920, 2000, 280);//one time generation of oversampled psf for fast construction of pixel maps
+    int [][] psfArray = SingleMoleculeImageGenerator.pixelatedPSF(pxRes, 81920, 1500, 280);//one time generation of oversampled psf for fast construction of pixel maps
     long lastTime; //hold the system time for previous render update
     
     public World worldBuilder() {
@@ -54,7 +54,6 @@ public class SPT_ECS {
         //run a limited number of ticks for now
         for (int i=0; i<500; i++){
             sim.simLoop(microWorld);
-            //System.out.println("tick");
         }
         System.exit(0);
     }

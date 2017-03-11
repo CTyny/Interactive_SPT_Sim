@@ -71,15 +71,14 @@ public class RenderSystem extends BaseEntitySystem {
             }
         }
         //Now we find out how long it's been since the last image update (lastTime) and if this is less than the world Delta wait for the difference
-        long nanoDelta = (long) (world.getDelta()*1E9);
-        long timeToWait = nanoDelta - (System.nanoTime()-lastTime);
+        double nanoDelta = (world.getDelta()*1000000000);
+        double timeToWait = nanoDelta - (System.nanoTime()-lastTime);
         if (timeToWait >0){
-            IJ.wait((int)(timeToWait/1E6));
+            IJ.wait((int)Math.round(timeToWait/1000000));
         }
-        System.out.println("tick: " + (System.nanoTime()-lastTime));
         //update ImagePlus object
         outputImage.updateAndDraw();
         lastTime = System.nanoTime();
-        //TODO: something is broken here, frame rate varies unecessarily through simulation. Casting errors?
+        //TODO: Need a better way of regulating draw time-step.
     }
 }
